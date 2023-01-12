@@ -1,4 +1,4 @@
-# thianella
+# thianella_blog
 
 ## Build Setup
 
