@@ -30,9 +30,9 @@ collections:
               fields:
               - {label: "Link Text", name: "linktext", widget: "string"}
               - {label: "Link Path", name: "linkpath", widget: "string"}
-  - label: "Blog"
-    name: "blog"
-    folder: "_posts/blog"
+  - name: "Blog"
+    label: "blog"
+    folder: "content/_posts/blog"
     create: true
     identifier_field: name
     fields:
