@@ -1,7 +1,7 @@
 <template>
     <div>
       <li v-for="post of posts" :key="post.name">
-        <NuxtLink :to="post.name">{{ post.title }}</NuxtLink>
+        <NuxtLink :to="post.name">{{ post.name }}</NuxtLink>
       </li>
     </div>
   </template>
@@ -13,7 +13,7 @@
     },
      data(){
       return{
-        posts:[]
+        posts:""
       }
      },
      methods:{
