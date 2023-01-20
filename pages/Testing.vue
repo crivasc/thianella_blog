@@ -8,12 +8,22 @@
   
   <script>
   export default {
-     async asyncData({ $content }) {
-      const posts = await $content("blog").fetch();
-  
-      return {
-        posts,
-      };
+    mounted(){
+      this.asyncData()
     },
+     data(){
+      return{
+        posts:[]
+      }
+     },
+     methods:{
+      async asyncData({ $content }) {
+        this.posts = await $content("blog").fetch();
+    
+        // return {
+        //   posts,
+        // };
+      },
+     }
   };
   </script>
