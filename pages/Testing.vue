@@ -1,7 +1,7 @@
 <template>
     <div>
-      <li v-for="post of posts" :key="post.slug">
-        <NuxtLink :to="post.slug">{{ post.title }}</NuxtLink>
+      <li v-for="post of posts" :key="post.name">
+        <NuxtLink :to="post.name">{{ post.title }}</NuxtLink>
       </li>
     </div>
   </template>
