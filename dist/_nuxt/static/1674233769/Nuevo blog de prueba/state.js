@@ -1,1 +1,0 @@
-window.__NUXT__={staticAssetsBase:"\u002F_nuxt\u002Fstatic\u002F1674233769",layout:"default",error:{message:"Blog Post not found",statusCode:500},serverRendered:false,routePath:"\u002FNuevo%20blog%20de%20prueba",config:{_app:{basePath:"\u002F",assetsPath:"\u002F_nuxt\u002F",cdnURL:null},content:{dbHash:"7a36033c"}}};
