@@ -18,7 +18,7 @@ import {
   
   import { db } from "../firebase";
   import { FaToggleOff, FaToggleOn, FaTrash } from "react-icons/fa";
-  import { deletepost, togglepoststatus } from "@/api/post";
+  import { deletePost, togglepoststatus } from "@/api/post";
   
   const PostList = () => {
     const [posts, setPosts] = useState([]);
@@ -45,7 +45,7 @@ import {
   
     const handlePostDelete = async (id) => {
       if (confirm("¿Seguro que desea eliminar nota?")) {
-        deletepost(id);
+        deletePost(id);
         toast({ title: "Nota borrada", status: "success" });
       }
     };

@@ -84,12 +84,12 @@ const Navbar =()=>{
                     <Button size="sm" className="w-auto" onClick={()=> toggleColorMode()}>
                         {colorMode =="light" ?<FaSun/>:<FaMoon/>}
                     </Button>{""}
-                    <div className="flex items-center justify-center">
+                    <div className="flex items-bottom justify-center">
                         <Image
                             src={user.photoURL}
                             alt={user.displayName || user.providerData[0].displayName}
-                            width={40}
-                            height={40}
+                            width={45}
+                            height={20}
                             className="rounded-full mx-2"
                         />
                         <div>
