@@ -18,7 +18,7 @@ import {
 
 import { db } from "../firebase";
 import { FaToggleOff, FaToggleOn, FaTrash } from "react-icons/fa";
-import { deleteTodo, toggleTodoStatus } from "@/api/todo";
+import { deleteTodo, toggleTodoStatus } from "@/api/post";
 
 const TodoList = () => {
   const [todos, setTodos] = useState([]);

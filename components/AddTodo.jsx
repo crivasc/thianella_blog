@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 
 import useAuth from "@/hooks/useAuth";
-import { addTodo } from "@/api/todo";
+import { addTodo } from "@/api/post";
 
 const AddTodo =()=>{
     const [title, setTitle] = useState("");
