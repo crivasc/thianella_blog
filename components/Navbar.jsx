@@ -24,17 +24,17 @@ const MENU_USR = [
 const MENU_LIST = [
 { text: "Home", href: "/", icon:<FaHome size={25}/>},
 { text: "Posts", href: "/Posts", icon: <FaNewspaper size={25}/> },
-// { text: "Contact", href: "/contact" },
+{ text: "Login", href: "/control", icon: <FaPowerOff/> },
 ];
 const Navbar =()=>{
     const {toggleColorMode, colorMode} = useColorMode();
-    const {isLoggedIn, user} = useAuth();
+    const {isLoggedIn, user, Name} = useAuth();
     const { push } = useRouter()
     const toggleSession=()=>{
         auth.signOut()
         push("/")
     }
-
+    //console.log(Name)
     const [navActive, setNavActive] = useState(null);
     const [activeIdx, setActiveIdx] = useState(-1);
     
@@ -87,13 +87,13 @@ const Navbar =()=>{
                     <div className="flex items-bottom justify-center">
                         <Image
                             src={user.photoURL}
-                            alt={user.displayName || user.providerData[0].displayName}
+                            alt={Name.displayName}
                             width={45}
                             height={20}
                             className="rounded-full mx-2"
                         />
                         <div>
-                        <Text color="greem.500" fontSize="md">{user.displayName || user.providerData[0].displayName}</Text>
+                        <Text color="greem.500" fontSize="md">{Name.displayName}</Text>
                         <Text color="greem.500" fontSize="xs">{user.email}</Text>
                         </div>
                     </div>

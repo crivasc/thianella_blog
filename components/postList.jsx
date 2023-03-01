@@ -4,6 +4,7 @@ import {
     Heading,
     SimpleGrid,
     Text,
+    useFormControlStyles,
     useToast,
   } from "@chakra-ui/react";
   
@@ -17,12 +18,12 @@ import {
   } from "firebase/firestore";
   
   import { db } from "../firebase";
-  import { FaToggleOff, FaToggleOn, FaTrash } from "react-icons/fa";
-  import { deletePost, togglepoststatus } from "@/api/post";
+  import { FaToggleOff, FaToggleOn, FaTrash, FaEdit, FaUserFriends } from "react-icons/fa";
+  import { deletePost, togglePostStatus } from "@/api/post";
   
-  const PostList = () => {
+  const PostList = ({postData}) => {
     const [posts, setPosts] = useState([]);
-    const { user } = useAuth();
+    const { user, Name } = useAuth();
     const toast = useToast();
     const refreshData = () => {
       if (!user) {
@@ -38,6 +39,7 @@ import {
         });
         setPosts(ar);
       });
+      //console.log('Refreshed =>', posts)
     };
     useEffect(() => {
       refreshData();
@@ -49,16 +51,29 @@ import {
         toast({ title: "Nota borrada", status: "success" });
       }
     };
+    const handlePostEdit = (id) => {
+        const q = query(collection(db, "posts"), where("user", "==", user.uid));
+        onSnapshot(q, (querySnapshot) => {
+          let ar = [];
+          querySnapshot.docs.forEach((doc) => {
+            ar.push({ id: doc.id, ...doc.data() });
+          });
+          let testar = ar.filter(x=>x.id == id)
+          postData(testar)
+        });
+    };
   
-    // const handleToggle = async (id, status) => {
-    //   const newStatus = status == "completado" ? "pendiente" : "completado";
-    //   await togglepoststatus({ docId: id, status: newStatus });
-    //   toast({
-    //     title: `post marked ${newStatus}`,
-    //     status: newStatus == "completado" ? "success" : "warning",
-    //   });
+    const handleToggle = async (id, status) => {
+      console.log(id, status,'=>id Status')
+      const newStatus = status == "publicado" ? "pendiente" : "publicado";
+      await togglePostStatus({ docId: id, status: newStatus });
+      postData('')
+      toast({
+        title: `Post ${newStatus}`,
+        status: newStatus == "publicado" ? "success" : "warning",
+      });
   
-    // };
+    };
   
     return (
       <Box mt={5}>
@@ -67,49 +82,68 @@ import {
             posts.map((post) => (
               <Box
                 p={3}
-                boxShadow="2xl"
-                shadow={"dark-lg"}
+                boxShadow="md"
                 transition="0.2s"
                 _hover={{ boxShadow: "sm" }}
                 key={post.id}
+                className="grid grid-cols-2 gap-2"
               >
-                <Heading as="h3" fontSize={"xl"}>
-                  {post.titulo}
-                  {""}
-                  <Badge
-                    color="red.500"
-                    bg="inherit"
-                    transition={"0.2s"}
-                    _hover={{ bg: "inherit", transform: "scale(1.2)" }}
-                    float="right"
-                    size="xs"
-                    onClick={() => handlePostDelete(post.id)}
-                  >
-                    <FaTrash />
+                <div>
+                  <Heading as="h3" fontSize={"md"} >
+                    {post.titulo}
+                  </Heading>
+                  <Text fontSize={'sm'}>{post.descripcion}</Text>
+                </div>
+                <div className="flex items-center justify-end gap-2">
+                <Badge
+                      float="right"
+                      opacity="0.8"
+                      className="text-2xl rounded rounded-lg px-2 w-3/12 text-center"
+                      bg={post.status == "pendiente" ? "yellow.200" : "green.200"}
+                    >
+                      {post.categoria}
                   </Badge>
+
                   <Badge
-                    color={post.categoria=="green.500"}
-                    bg="inherit"
-                    transition={"0.2s"}
-                    _hover={{
-                      bg: "inherit",
-                      transform: "scale(1.2)",
-                    }}
-                    float="right"
-                    size="xs"
-                    onClick={() => handleToggle(post.id, post.categoria)}
-                  >
-                    {/* {post.status == "pendiente" ? <FaToggleOff /> : <FaToggleOn />} */}
-                  </Badge>
-                  <Badge
-                    float="right"
-                    opacity="0.8"
-                    // bg={post.status == "pendiente" ? "yellow.500" : "green.500"}
-                  >
-                    {post.categoria}
-                  </Badge>
-                </Heading>
-                <Text>{post.descripcion}</Text>
+                      color={post.categoria=="green.500"}
+                      bg="inherit"
+                      transition={"0.2s"}
+                      _hover={{
+                        bg: "inherit",
+                        transform: "scale(1.2)",
+                      }}
+                      float="right"
+                      size="2xl"
+                      onClick={(e) => handleToggle(post.id, post.status)}
+                    >
+                      {post.status == "pendiente" ? <FaToggleOff size={25}/> : <FaToggleOn size={25}/>}
+                    </Badge>
+
+                    <Badge
+                      bg="inherit"
+                      transition={"0.2s"}
+                      _hover={{ bg: "inherit", transform: "scale(1.2)" }}
+                      float="right"
+                      size="2xl"
+                      onClick={(e) => handlePostEdit(post.id)}
+                    >
+                      <FaEdit size={18}/>
+                    </Badge>
+
+                    <Badge
+                        color="red.500"
+                        bg="inherit"
+                        transition={"0.2s"}
+                        _hover={{ bg: "inherit", transform: "scale(1.2)" }}
+                        float="right"
+                        size="sm"
+                        onClick={(e) => handlePostDelete(post.id)}
+                      >
+                      <FaTrash size={18}/>
+                    </Badge>
+
+                </div>
+                
               </Box>
             ))}
         </SimpleGrid>
