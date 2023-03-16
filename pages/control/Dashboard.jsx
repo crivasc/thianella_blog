@@ -42,7 +42,7 @@ const Dashboard =()=>{
         setSelected("misposts")
         setCler(false)
     }, [cler]);
-    console.log(editar)
+    //console.log(editar)
     return(
         isLoggedIn ? (
         <Layout>

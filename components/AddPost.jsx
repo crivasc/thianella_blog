@@ -14,6 +14,8 @@ import {
 import useAuth from "@/hooks/useAuth";
 import { newPost, updatePost } from "@/api/post";
 import dynamic from "next/dynamic";
+import Archivos from "./Archivos";
+import Image from "next/image";
 //import {RichTextEditor} from "@mantine/rte";
 const RichTextEditor = dynamic(() => import("@mantine/rte"), { ssr: false });
 
@@ -24,6 +26,9 @@ const AddPost =({edit, reset, reselect, canceler})=>{
     const [categoria, setCategoria] = useState("");
     const [letras, setLetras] = useState("Inishial esteit");
     const [status, setStatus] = useState("");
+    const [arte, setArte] = useState('');
+
+    const [archivo, setArchivo] = useState('');
     const [id, setId] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
@@ -41,6 +46,7 @@ const AddPost =({edit, reset, reselect, canceler})=>{
                 setAutor(post.autor),
                 setCategoria(post.categoria),
                 setStatus(post.status)
+                setArte(post.arte)
             })
         }
     }, [edit]);    
@@ -70,6 +76,7 @@ const AddPost =({edit, reset, reselect, canceler})=>{
                 letras,
                 status,
                 userId:user.uid,
+                arte:archivo
             };
             await newPost(post).then(cancelar);
         }else{
@@ -80,7 +87,8 @@ const AddPost =({edit, reset, reselect, canceler})=>{
                 categoria,
                 letras,
                 status,
-                userId:user.uid
+                userId:user.uid,
+                arte:archivo
             };
             let did = edit[0].id
             
@@ -95,11 +103,16 @@ const AddPost =({edit, reset, reselect, canceler})=>{
         setAutor("");
         setCategoria("");
         setStatus("");
+        setArte('')
         toast(
             edit == null || edit == '' ? ({title:"Nota creada", status:"success"}) : ({title:"Nota actualizada", status:"success"})
         );
         reselect('misposts')
     };
+    const handlePic =(ver)=>{
+        console.log('jandlepic', ver)
+        setArchivo(ver)
+    }
     const cancelar =()=>{
         setIsLoading(false);
         setTitulo("");
@@ -108,13 +121,26 @@ const AddPost =({edit, reset, reselect, canceler})=>{
         setAutor("");
         setCategoria("");
         setStatus("");
+        setArchivo('');
+        setArte('')
 
         reset('all')
     }
+    useEffect(() => {
+        console.log('Elar',archivo)
+    }, [archivo]);
 
     return(
          <Box w="100%" margin={"0 auto"} display="block" mt={5}>
-              <Stack spacing={4} direction='row'>
+            <Stack spacing={4} direction='column'>
+                <Box p={5} w="full" shadow='md' borderWidth='1px' className={archivo!='' && 'hidden'}>
+                    <Archivos pictoris={handlePic}/>
+                </Box>
+                <Box p={5} w="full" shadow='md' borderWidth='1px' className={archivo=='' && 'hidden'}>
+                    <Image src={archivo} alt="Halt" width={300} height={300}/>
+                </Box>
+            </Stack>
+            <Stack spacing={4} direction='row'>
                 <Box p={5} w="full" shadow='md' borderWidth='1px'>
                     <Input placeholder="Titulo" value={titulo} className="mb-4" 
                         onChange={(e) => setTitulo(e.target.value)}/>
@@ -171,6 +197,7 @@ const AddPost =({edit, reset, reselect, canceler})=>{
             </Stack>
         </Box>
     );
+    
 };
 
 export default AddPost;

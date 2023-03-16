@@ -23,13 +23,14 @@ if (month<10){
 }
 
 
-const newPost = async ({userId, titulo, descripcion, autor, categoria, status, letras})=> {
+const newPost = async ({userId, titulo, descripcion, autor, categoria, status, letras, arte})=> {
     try {
         await addDoc(collection(db, "posts"),{
             user:userId,
             titulo:titulo,
             descripcion:descripcion,
             autor:autor,
+            arte:arte,
             categoria:categoria,
             status:status,
             letras:letras,
@@ -47,6 +48,7 @@ const updatePost = async (lista, docId)=> {
             titulo:lista.titulo,
             descripcion:lista.descripcion,
             autor:lista.autor,
+            arte:lista.arte,
             categoria:lista.categoria,
             status:lista.status,
             letras:lista.letras,

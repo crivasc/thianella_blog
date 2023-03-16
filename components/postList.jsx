@@ -25,6 +25,7 @@ import {
     const [posts, setPosts] = useState([]);
     const { user, Name } = useAuth();
     const toast = useToast();
+    
     const refreshData = () => {
       if (!user) {
         setPosts([]);
@@ -64,10 +65,8 @@ import {
     };
   
     const handleToggle = async (id, status) => {
-      console.log(id, status,'=>id Status')
       const newStatus = status == "publicado" ? "pendiente" : "publicado";
       await togglePostStatus({ docId: id, status: newStatus });
-      postData('')
       toast({
         title: `Post ${newStatus}`,
         status: newStatus == "publicado" ? "success" : "warning",
